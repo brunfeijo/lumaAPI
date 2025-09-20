@@ -1,28 +1,69 @@
-# Cypress API Tests — TypeScript (restful-api.dev)
+# Cypress API Tests — restful-api.dev (TypeScript)
 
-## Prereqs
-- Node 18+
+This project demonstrates API testing with [Cypress](https://www.cypress.io/) and TypeScript.  
+It covers GET, POST, PUT, and DELETE requests against the public API at [https://restful-api.dev](https://restful-api.dev).
+
+---
+
+## 🚀 Installation
+
+### Prerequisites
+- Node.js **18+**
 - npm
 
-## Install
+### Setup
 ```bash
-npm i
+# clone this repo
+git clone https://github.com/brunfeijo/lumaAPI.git
+cd lumaAPI
+
+# install dependencies
+npm install
 ```
 
-## Run
-Interactive:
+---
+
+## ▶️ Running Tests
+
+Interactive mode (headed):
 ```bash
-npm run cy:open
+npx cypress open
 ```
 
-Headless:
+Headless mode (CI-friendly):
 ```bash
 npm test
 # or
-npm run cy:run
+npx cypress run
 ```
 
-## Notes
-- Uses a small Page Object (`ApiClient`) for readability.
-- Each test runs independently and creates/cleans up its own data where needed.
-- Base URL is `https://api.restful-api.dev`.
+---
+
+## ✅ Test Cases
+
+The suite validates different HTTP methods and ensures each test runs independently:
+
+### 1. **GET /objects — list**
+- Fetch all resources
+- Validate the response is a non-empty array (size > 0)
+
+### 2. **GET /objects/:id — by ID**
+- Pick an existing mock resource ID from the list
+- Fetch it by ID
+- Validate response shape (`id` and `name` fields exist)
+
+### 3. **POST /objects — create**
+- Create a new resource with a unique payload
+- Store its ID
+- Fetch it back by ID to confirm it was created successfully
+
+### 4. **PUT /objects/:id — update**
+- Create a fresh resource (test independence)
+- Update the resource (change `name` and `color`)
+- Validate both the immediate PUT response and a follow-up GET show the updated values
+
+### 5. **DELETE /objects/:id — delete**
+- Create a fresh resource
+- Delete it by ID
+- Confirm deletion by checking that a subsequent GET returns **404** or a “not found” message
+
